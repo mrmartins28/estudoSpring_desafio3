@@ -36,6 +36,8 @@ public class ClientDTO {
 		this.children = children;
 	}
 	
+	
+	
 	public ClientDTO(Client entity) {
 		
 		id = entity.getId();
