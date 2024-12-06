@@ -1,8 +1,11 @@
 package com.lsmartin.crudcliente.controllers;
 
+
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,11 +53,18 @@ public class ClientController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id){
+	public ResponseEntity<Void> delete(@PathVariable Long id){
 		
 		service.delete(id);
 		
-		return ResponseEntity.ok("Deletado com sucesso");
+		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping
+	public ResponseEntity<Page<ClientDTO>> findAll(Pageable pageable){
+		
+		Page<ClientDTO> dto = service.findAll(pageable);
+		return ResponseEntity.ok(dto); 
 	}
 
 }

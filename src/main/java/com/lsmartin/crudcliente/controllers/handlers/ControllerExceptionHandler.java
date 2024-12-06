@@ -13,6 +13,7 @@ import com.lsmartin.crudcliente.dto.CustomError;
 import com.lsmartin.crudcliente.dto.ValidationError;
 import com.lsmartin.crudcliente.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
@@ -36,6 +37,14 @@ public class ControllerExceptionHandler {
 			err.addErrors(f.getField(), f.getDefaultMessage());
 			
 		}
+		return ResponseEntity.status(status).body(err);
+			
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<CustomError> entityNotFound(EntityNotFoundException e, HttpServletRequest request){	
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		CustomError err = new CustomError(Instant.now(), status.value(), "Recurso não encontrado", request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 		
 		
